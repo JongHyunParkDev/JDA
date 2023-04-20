@@ -1,15 +1,11 @@
 package com.yj.yjbot.service;
 
-import com.yj.yjbot.command.GiftCommand;
-import com.yj.yjbot.command.LiarGameCommand;
+import com.yj.yjbot.command.CommandManager;
 import com.yj.yjbot.listener.EventListener;
 import jakarta.annotation.PostConstruct;
-import net.dv8tion.jda.api.JDA;
-import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.OnlineStatus;
 import net.dv8tion.jda.api.entities.Activity;
 import net.dv8tion.jda.api.requests.GatewayIntent;
-import net.dv8tion.jda.api.sharding.DefaultShardManager;
 import net.dv8tion.jda.api.sharding.DefaultShardManagerBuilder;
 import net.dv8tion.jda.api.sharding.ShardManager;
 import net.dv8tion.jda.api.utils.ChunkingFilter;
@@ -17,9 +13,6 @@ import net.dv8tion.jda.api.utils.MemberCachePolicy;
 import net.dv8tion.jda.api.utils.cache.CacheFlag;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-
-import javax.security.auth.login.LoginException;
-import java.util.Arrays;
 
 @Service
 public class HomeService {
@@ -46,8 +39,7 @@ public class HomeService {
         // Register Listener
         shardManager.addEventListener(
                 new EventListener(),
-                new GiftCommand(),
-                new LiarGameCommand()
+                new CommandManager()
         );
     }
 
