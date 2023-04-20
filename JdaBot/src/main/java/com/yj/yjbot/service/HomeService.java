@@ -1,5 +1,7 @@
 package com.yj.yjbot.service;
 
+import com.yj.yjbot.command.GiftCommand;
+import com.yj.yjbot.command.LiarGameCommand;
 import com.yj.yjbot.listener.EventListener;
 import jakarta.annotation.PostConstruct;
 import net.dv8tion.jda.api.JDA;
@@ -10,6 +12,9 @@ import net.dv8tion.jda.api.requests.GatewayIntent;
 import net.dv8tion.jda.api.sharding.DefaultShardManager;
 import net.dv8tion.jda.api.sharding.DefaultShardManagerBuilder;
 import net.dv8tion.jda.api.sharding.ShardManager;
+import net.dv8tion.jda.api.utils.ChunkingFilter;
+import net.dv8tion.jda.api.utils.MemberCachePolicy;
+import net.dv8tion.jda.api.utils.cache.CacheFlag;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -29,14 +34,21 @@ public class HomeService {
                 GatewayIntent.GUILD_MEMBERS,
                 GatewayIntent.GUILD_MESSAGES,
                 GatewayIntent.DIRECT_MESSAGES,
-                GatewayIntent.MESSAGE_CONTENT
+                GatewayIntent.MESSAGE_CONTENT,
+                GatewayIntent.GUILD_PRESENCES
         );
-
+        builder.setMemberCachePolicy(MemberCachePolicy.ALL);
+        builder.setChunkingFilter(ChunkingFilter.ALL);
+        builder.enableCache(CacheFlag.ONLINE_STATUS, CacheFlag.ACTIVITY);
 
         shardManager = builder.build();
 
         // Register Listener
-        shardManager.addEventListener(new EventListener());
+        shardManager.addEventListener(
+                new EventListener(),
+                new GiftCommand(),
+                new LiarGameCommand()
+        );
     }
 
     public ShardManager getShardManager() {
