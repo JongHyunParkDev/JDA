@@ -6,18 +6,18 @@ plugins {
 
 group = 'com.yj'
 version = '0.0.1-SNAPSHOT'
-sourceCompatibility = '20'
+sourceCompatibility = '18'
 
 repositories {
 	mavenCentral()
-	maven { url 'https://jitpack.io' }
+	maven { url 'https://m2.dv8tion.net/releases' }
 }
 
 dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
-	implementation 'com.github.FrostedCA:EasyCommands:0.1'
-	implementation 'net.dv8tion:JDA:5.0.0-beta.3'
+	implementation 'net.dv8tion:JDA:5.0.0-beta.8'
+	implementation 'com.sedmelluq:lavaplayer:1.3.77'
 }
 
 tasks.named('test') {
