@@ -1,0 +1,283 @@
+{
+  "list": [
+    {
+      "category": "음식",
+      "answer": "냉면"
+    },
+    {
+      "category": "음식",
+      "answer": "떡볶이"
+    },
+    {
+      "category": "음식",
+      "answer": "마라탕"
+    },
+    {
+      "category": "음식",
+      "answer": "치킨"
+    },
+    {
+      "category": "음식",
+      "answer": "파전"
+    },
+    {
+      "category": "음식",
+      "answer": "빵"
+    },
+
+    {
+      "category": "장소",
+      "answer": "학교"
+    },
+    {
+      "category": "장소",
+      "answer": "편의점"
+    },
+    {
+      "category": "장소",
+      "answer": "병원"
+    },
+    {
+      "category": "장소",
+      "answer": "카페"
+    },
+    {
+      "category": "장소",
+      "answer": "헬스장"
+    },
+    {
+      "category": "장소",
+      "answer": "음식점"
+    },
+
+    {
+      "category": "영화",
+      "answer": "어벤져스"
+    },
+    {
+      "category": "영화",
+      "answer": "타짜"
+    },
+    {
+      "category": "영화",
+      "answer": "클래식"
+    },
+    {
+      "category": "영화",
+      "answer": "범죄도시"
+    },
+    {
+      "category": "영화",
+      "answer": "겨울왕국"
+    },
+    {
+      "category": "영화",
+      "answer": "기생충"
+    },
+    {
+      "category": "영화",
+      "answer": "부산행"
+    },
+    {
+      "category": "영화",
+      "answer": "도둑들"
+    },
+    {
+      "category": "영화",
+      "answer": "극한직업"
+    },
+
+    {
+      "category": "직업",
+      "answer": "개발자"
+    },
+    {
+      "category": "직업",
+      "answer": "디자이너"
+    },
+    {
+      "category": "직업",
+      "answer": "자영업자"
+    },
+    {
+      "category": "직업",
+      "answer": "스트리머"
+    },
+    {
+      "category": "직업",
+      "answer": "선생님"
+    },
+    {
+      "category": "직업",
+      "answer": "백수"
+    },
+    {
+      "category": "직업",
+      "answer": "학생"
+    },
+    {
+      "category": "직업",
+      "answer": "군인"
+    },
+    {
+      "category": "직업",
+      "answer": "배우"
+    },
+    {
+      "category": "직업",
+      "answer": "경찰"
+    },
+    {
+      "category": "도시",
+      "answer": "홍콩"
+    },
+    {
+      "category": "도시",
+      "answer": "서울"
+    },
+    {
+      "category": "도시",
+      "answer": "부산"
+    },
+    {
+      "category": "도시",
+      "answer": "LA"
+    },
+    {
+      "category": "도시",
+      "answer": "제주도"
+    },
+    {
+      "category": "도시",
+      "answer": "방콕"
+    },
+    {
+      "category": "나라",
+      "answer": "북한"
+    },
+    {
+      "category": "나라",
+      "answer": "미국"
+    },
+    {
+      "category": "나라",
+      "answer": "일본"
+    },
+    {
+      "category": "나라",
+      "answer": "대한민국"
+    },
+    {
+      "category": "나라",
+      "answer": "중국"
+    },
+    {
+      "category": "동물",
+      "answer": "인간"
+    },
+    {
+      "category": "동물",
+      "answer": "너구리"
+    },
+    {
+      "category": "동물",
+      "answer": "호랑이"
+    },
+    {
+      "category": "동물",
+      "answer": "공룡"
+    },
+    {
+      "category": "동물",
+      "answer": "비둘기"
+    },
+    {
+      "category": "캐릭터",
+      "answer": "스파이더맨"
+    },
+    {
+      "category": "캐릭터",
+      "answer": "사오정"
+    },
+    {
+      "category": "캐릭터",
+      "answer": "헐크"
+    },
+    {
+      "category": "캐릭터",
+      "answer": "해리포터"
+    },
+    {
+      "category": "캐릭터",
+      "answer": "배트맨"
+    },
+    {
+      "category": "캐릭터",
+      "answer": "뽀로로"
+    },
+    {
+      "category": "게임",
+      "answer": "리그오브레전드"
+    },
+    {
+      "category": "게임",
+      "answer": "스타크래프트"
+    },
+    {
+      "category": "게임",
+      "answer": "로스트아크"
+    },
+    {
+      "category": "게임",
+      "answer": "겟엠프드"
+    },
+    {
+      "category": "게임",
+      "answer": "사이퍼즈"
+    },
+    {
+      "category": "게임",
+      "answer": "배틀그라운드"
+    },
+    {
+      "category": "게임",
+      "answer": "메이플"
+    },
+    {
+      "category": "인물",
+      "answer": "이순신"
+    },
+    {
+      "category": "인물",
+      "answer": "신사임당"
+    },
+    {
+      "category": "인물",
+      "answer": "트럼프"
+    },
+    {
+      "category": "인물",
+      "answer": "세종대왕"
+    },
+    {
+      "category": "탈 것",
+      "answer": "자전거"
+    },
+    {
+      "category": "탈 것",
+      "answer": "자동차"
+    },
+    {
+      "category": "탈 것",
+      "answer": "가마"
+    },
+    {
+      "category": "탈 것",
+      "answer": "인력거"
+    },
+    {
+      "category": "탈 것",
+      "answer": "비행기"
+    }
+  ]
+}

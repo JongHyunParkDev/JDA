@@ -1,17 +1,21 @@
 package com.yj.yjbot.command;
 
 import com.yj.yjbot.data.Gift;
+import com.yj.yjbot.data.LiarGame;
 import net.dv8tion.jda.api.OnlineStatus;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.events.guild.GuildReadyEvent;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
+import net.dv8tion.jda.api.interactions.commands.OptionMapping;
+import net.dv8tion.jda.api.interactions.commands.OptionType;
 import net.dv8tion.jda.api.interactions.commands.build.Commands;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 import java.util.stream.Collectors;
 
 public class CommandManager extends ListenerAdapter {
@@ -37,28 +41,29 @@ public class CommandManager extends ListenerAdapter {
         }
         // TODO 참가 기능을 만들어서 온라인 유저 전부에게 보내는 것이 아닌, 참가된 유저에 한해서 만 보낸다.
         else if (command.equals("liargame")) {
-            String result = String.format("라이어 게임 (카테고리 - %s)", "테스트");
+            LiarGame.LiarObj liarObj = LiarGame.getLiarData();
+            String result = String.format("라이어 게임 (카테고리 - %s)", liarObj.getCategory());
             Guild guild = event.getGuild();
 
-            guild.loadMembers()
-                .onSuccess(members -> {
-                    List<Member> onlineMembers = members.stream()
-                        .filter(
-                            member ->
-                                member.getOnlineStatus() == OnlineStatus.ONLINE && ! member.getUser().isBot())
-                        .collect(Collectors.toList());
+            List<Member> memberList = new ArrayList<>();
+            // 최대 6 명
+            for (int i = 1; i <= 6; i++) {
+                OptionMapping optionMapping = event.getOption("참가" + i);
+                if (optionMapping != null) {
+                    memberList.add(optionMapping.getAsMember());
+                }
+            }
 
-                    onlineMembers.forEach(member -> {
-                        member.getUser().openPrivateChannel().queue(
-                            privateChannel -> {
-                                privateChannel.sendMessage("너는 라이어야").queue();
-                            });
-                    });
-                })
-                .onError(error -> {
-                    // 멤버 목록 로딩에 실패한 경우 처리
-                    event.getHook().sendMessage("Failed to load members.").queue();
-                });
+            int random = new Random().nextInt(memberList.size());
+
+            for (int i = 0; i < memberList.size(); i++) {
+                String text = random == i ? "당신은 라이어 입니다." : String.format("단어는 %s 입니다.", liarObj.getAnswer());
+                memberList.get(i).getUser().openPrivateChannel().queue(
+                    privateChannel -> {
+                        privateChannel.sendMessage(text).queue();
+                    }
+                );
+            }
             event.reply(result).queue();
         }
     }
@@ -68,7 +73,13 @@ public class CommandManager extends ListenerAdapter {
         event.getGuild().updateCommands().addCommands(
                 new ArrayList<>() {{
                     add(Commands.slash("gift", "선물!!!"));
-                    add(Commands.slash("liargame", "라이어 게임"));
+                    add(Commands.slash("liargame", "라이어 게임 (최소 3명 이상 가능합니다.)")
+                            .addOption(OptionType.USER, "참가1", "게임에 참가할 유저들을 선택해주세요", true)
+                            .addOption(OptionType.USER, "참가2", "게임에 참가할 유저들을 선택해주세요", true)
+                            .addOption(OptionType.USER, "참가3", "게임에 참가할 유저들을 선택해주세요", true)
+                            .addOption(OptionType.USER, "참가4", "게임에 참가할 유저들을 선택해주세요", false)
+                            .addOption(OptionType.USER, "참가5", "게임에 참가할 유저들을 선택해주세요", false)
+                            .addOption(OptionType.USER, "참가6", "게임에 참가할 유저들을 선택해주세요", false));
                 }}
         ).queue();
     }
