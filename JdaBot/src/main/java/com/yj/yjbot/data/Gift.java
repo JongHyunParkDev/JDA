@@ -63,7 +63,9 @@ public class Gift {
         ));
         add(new Gift("선물: 반지 (날씨 반지야! (13호))",
                 "호수가 잘 맞으면 좋겠어! 제바류ㅠㅠㅠ",
-                "Always Sunny",
+                "It's not what the weather is, what the environment is, \n" +
+                        "but what your mind thinks is the most important.\n" +
+                        "And I hope your mind is \"Always Sunny\"",
                 12
         ));
         add(new Gift("선물: 네컷편지",

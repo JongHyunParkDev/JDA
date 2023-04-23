@@ -5,13 +5,18 @@ import com.yj.yjbot.data.LiarGame;
 import net.dv8tion.jda.api.OnlineStatus;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Member;
+import net.dv8tion.jda.api.entities.channel.ChannelType;
+import net.dv8tion.jda.api.entities.channel.middleman.MessageChannel;
 import net.dv8tion.jda.api.events.guild.GuildReadyEvent;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import net.dv8tion.jda.api.interactions.commands.OptionMapping;
 import net.dv8tion.jda.api.interactions.commands.OptionType;
 import net.dv8tion.jda.api.interactions.commands.build.Commands;
+import net.dv8tion.jda.api.interactions.commands.build.OptionData;
 
+import javax.swing.text.html.Option;
+import java.nio.channels.Channel;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -39,11 +44,25 @@ public class CommandManager extends ListenerAdapter {
             }
             event.reply("선물을 받을 수 없는 날짜 이거나, 선물이 소진되었습니다.").queue();
         }
-        // TODO 참가 기능을 만들어서 온라인 유저 전부에게 보내는 것이 아닌, 참가된 유저에 한해서 만 보낸다.
+        else if (command.equals("say")) {
+            String message = event.getOption("메시지").getAsString();
+
+            MessageChannel channel;
+            OptionMapping channelOption = event.getOption("채널");
+
+            if (channelOption == null) {
+                channel = event.getChannel();
+            }
+            else {
+                channel = channelOption.getAsChannel().asTextChannel();
+            }
+
+            channel.sendMessage(message).queue();
+            event.reply("메시지가 전달되었습니다.").setEphemeral(true).queue();
+        }
         else if (command.equals("liargame")) {
             LiarGame.LiarObj liarObj = LiarGame.getLiarData();
             String result = String.format("라이어 게임 (카테고리 - %s)", liarObj.getCategory());
-            Guild guild = event.getGuild();
 
             List<Member> memberList = new ArrayList<>();
             // 최대 6 명
@@ -72,14 +91,23 @@ public class CommandManager extends ListenerAdapter {
     public void onGuildReady(GuildReadyEvent event) {
         event.getGuild().updateCommands().addCommands(
                 new ArrayList<>() {{
+
                     add(Commands.slash("gift", "선물!!!"));
-                    add(Commands.slash("liargame", "라이어 게임 (최소 3명 이상 가능합니다.)")
-                            .addOption(OptionType.USER, "참가1", "게임에 참가할 유저들을 선택해주세요", true)
-                            .addOption(OptionType.USER, "참가2", "게임에 참가할 유저들을 선택해주세요", true)
-                            .addOption(OptionType.USER, "참가3", "게임에 참가할 유저들을 선택해주세요", true)
-                            .addOption(OptionType.USER, "참가4", "게임에 참가할 유저들을 선택해주세요", false)
-                            .addOption(OptionType.USER, "참가5", "게임에 참가할 유저들을 선택해주세요", false)
-                            .addOption(OptionType.USER, "참가6", "게임에 참가할 유저들을 선택해주세요", false));
+                    add(Commands.slash("say", "입력 받은 값을 그대로 Bot이 쳐줍니다.")
+                            .addOptions(
+                                new OptionData(OptionType.STRING, "메시지", "전송할 메시지", true),
+                                new OptionData(OptionType.CHANNEL, "채널", "Message 채널 선택", false)
+                                        .setChannelTypes(ChannelType.TEXT, ChannelType.NEWS)
+                            ));
+                    add(Commands.slash("liargame", "라이어 게임 (3 ~ 6 인원 가능합니다.)")
+                            .addOptions(
+                                new OptionData(OptionType.USER, "참가1", "게임에 참가할 유저들을 선택해주세요", true),
+                                new OptionData(OptionType.USER, "참가2", "게임에 참가할 유저들을 선택해주세요", true),
+                                new OptionData(OptionType.USER, "참가3", "게임에 참가할 유저들을 선택해주세요", true),
+                                new OptionData(OptionType.USER, "참가4", "게임에 참가할 유저들을 선택해주세요", false),
+                                new OptionData(OptionType.USER, "참가5", "게임에 참가할 유저들을 선택해주세요", false),
+                                new OptionData(OptionType.USER, "참가6", "게임에 참가할 유저들을 선택해주세요", false)
+                            ));
                 }}
         ).queue();
     }
