@@ -45,7 +45,7 @@ public class Gift {
     }
 
     public static final LocalDateTime START_DATE_TIME =
-            LocalDateTime.of(2023, 4, 20, 0, 0, 0);
+            LocalDateTime.of(2023, 4, 25, 0, 0, 0);
 
     public static LocalDateTime END_DATE_TIME =
             LocalDateTime.of(2023, 4, 26, 0, 0, 0);
@@ -66,7 +66,7 @@ public class Gift {
                 "It's not what the weather is, what the environment is, \n" +
                         "but what your mind thinks is the most important.\n" +
                         "And I hope your mind is \"Always Sunny\"",
-                12
+                13
         ));
         add(new Gift("선물: 네컷편지",
                 "편지가 없으면 섭하지!",
@@ -76,7 +76,7 @@ public class Gift {
         add(new Gift("선물: 액자",
                 "마지막 선물인데... 모든 선물이 좋았으면 좋겠땅!",
                 "앵미랑 첫 여행 갔을 때 사진이야. 먼가 둘다 이쁘게 잘 나온 거 같고, 둘다 잘 차려 입어서 선택했어!",
-                20
+                21
         ));
     }};
 }

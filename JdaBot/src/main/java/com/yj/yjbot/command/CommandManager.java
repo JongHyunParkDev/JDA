@@ -2,10 +2,12 @@ package com.yj.yjbot.command;
 
 import com.yj.yjbot.data.Gift;
 import com.yj.yjbot.data.LiarGame;
+import com.yj.yjbot.schedule.GiftSchedule;
 import net.dv8tion.jda.api.OnlineStatus;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.channel.ChannelType;
+import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
 import net.dv8tion.jda.api.entities.channel.middleman.MessageChannel;
 import net.dv8tion.jda.api.events.guild.GuildReadyEvent;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
@@ -89,9 +91,10 @@ public class CommandManager extends ListenerAdapter {
 
     @Override
     public void onGuildReady(GuildReadyEvent event) {
+        GiftSchedule.textChannel = event.getGuild().getDefaultChannel().asTextChannel();
+
         event.getGuild().updateCommands().addCommands(
                 new ArrayList<>() {{
-
                     add(Commands.slash("gift", "선물!!!"));
                     add(Commands.slash("say", "입력 받은 값을 그대로 Bot이 쳐줍니다.")
                             .addOptions(

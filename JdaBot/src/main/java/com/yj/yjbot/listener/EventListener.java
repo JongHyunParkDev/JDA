@@ -36,10 +36,11 @@ public class EventListener extends ListenerAdapter {
                 .flatMap(channel -> channel.sendMessage("안뇽!"))
                 .queue();
     }
-    @Override
-    public void onUserUpdateOnlineStatus(UserUpdateOnlineStatusEvent event) {
-        User user = event.getUser();
-        String message = user.getAsTag() + " updated Their online status to " + event.getNewOnlineStatus().getKey();
-        event.getGuild().getDefaultChannel().asTextChannel().sendMessage(message).queue();
-    }
+    // 이건 잠시 지워둔다.
+//    @Override
+//    public void onUserUpdateOnlineStatus(UserUpdateOnlineStatusEvent event) {
+//        User user = event.getUser();
+//        String message = user.getAsTag() + " updated Their online status to " + event.getNewOnlineStatus().getKey();
+//        event.getGuild().getDefaultChannel().asTextChannel().sendMessage(message).queue();
+//    }
 }
