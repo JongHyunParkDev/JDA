@@ -4,7 +4,6 @@ import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.events.guild.member.GuildMemberJoinEvent;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.events.message.react.MessageReactionAddEvent;
-import net.dv8tion.jda.api.events.user.update.UserUpdateOnlineStatusEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 
 
@@ -33,7 +32,7 @@ public class EventListener extends ListenerAdapter {
     @Override
     public void onGuildMemberJoin(GuildMemberJoinEvent event) {
         event.getUser().openPrivateChannel()
-                .flatMap(channel -> channel.sendMessage("안뇽!"))
+                .flatMap(channel -> channel.sendMessage("안녕"))
                 .queue();
     }
     // 이건 잠시 지워둔다.

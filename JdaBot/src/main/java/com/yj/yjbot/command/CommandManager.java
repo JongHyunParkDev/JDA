@@ -1,13 +1,9 @@
 package com.yj.yjbot.command;
 
-import com.yj.yjbot.data.Gift;
 import com.yj.yjbot.data.LiarGame;
-import com.yj.yjbot.schedule.GiftSchedule;
-import net.dv8tion.jda.api.OnlineStatus;
-import net.dv8tion.jda.api.entities.Guild;
+import com.yj.yjbot.schedule.TaskSchedule;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.channel.ChannelType;
-import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
 import net.dv8tion.jda.api.entities.channel.middleman.MessageChannel;
 import net.dv8tion.jda.api.events.guild.GuildReadyEvent;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
@@ -17,36 +13,16 @@ import net.dv8tion.jda.api.interactions.commands.OptionType;
 import net.dv8tion.jda.api.interactions.commands.build.Commands;
 import net.dv8tion.jda.api.interactions.commands.build.OptionData;
 
-import javax.swing.text.html.Option;
-import java.nio.channels.Channel;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
-import java.util.stream.Collectors;
 
 public class CommandManager extends ListenerAdapter {
 
     @Override
     public void onSlashCommandInteraction(SlashCommandInteractionEvent event) {
         String command = event.getName();
-        if (command.equals("gift")) {
-            LocalDateTime now = LocalDateTime.now();
-            int hour = now.getHour();
-
-            if (now.isAfter(Gift.START_DATE_TIME) && now.isBefore(Gift.END_DATE_TIME) && ! Gift.GIFT_LIST.isEmpty()) {
-                Gift gift = Gift.GIFT_LIST.peek();
-                if (gift.getStartHour() <= hour) {
-                    Gift.GIFT_LIST.remove();
-                    event.reply(gift.getDiscordText()).queue();
-                    return;
-                }
-                event.reply(String.format("선물 시간이 아니다!. 다음 선물 시각은 %d시", gift.getStartHour())).queue();
-                return;
-            }
-            event.reply("선물을 받을 수 없는 날짜 이거나, 선물이 소진되었습니다.").queue();
-        }
-        else if (command.equals("say")) {
+        if (command.equals("say")) {
             String message = event.getOption("메시지").getAsString();
 
             MessageChannel channel;
@@ -91,11 +67,10 @@ public class CommandManager extends ListenerAdapter {
 
     @Override
     public void onGuildReady(GuildReadyEvent event) {
-        GiftSchedule.textChannel = event.getGuild().getDefaultChannel().asTextChannel();
+        TaskSchedule.textChannel = event.getGuild().getDefaultChannel().asTextChannel();
 
         event.getGuild().updateCommands().addCommands(
                 new ArrayList<>() {{
-                    add(Commands.slash("gift", "선물!!!"));
                     add(Commands.slash("say", "입력 받은 값을 그대로 Bot이 쳐줍니다.")
                             .addOptions(
                                 new OptionData(OptionType.STRING, "메시지", "전송할 메시지", true),
