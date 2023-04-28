@@ -1,7 +1,9 @@
 package com.yj.yjbot.command;
 
 import com.yj.yjbot.data.LiarGame;
+import com.yj.yjbot.lavaplayer.PlayerManager;
 import com.yj.yjbot.schedule.TaskSchedule;
+import net.dv8tion.jda.api.entities.GuildVoiceState;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.channel.ChannelType;
 import net.dv8tion.jda.api.entities.channel.middleman.MessageChannel;
@@ -62,6 +64,31 @@ public class CommandManager extends ListenerAdapter {
                 );
             }
             event.reply(result).queue();
+        }
+        else if (command.equals("play")) {
+            Member member = event.getMember();
+            GuildVoiceState guildVoiceState = member.getVoiceState();
+
+            if (! guildVoiceState.inAudioChannel()) {
+                event.reply("You are not in Voice Channel").queue();
+                return;
+            }
+
+            Member self = event.getGuild().getSelfMember();
+            GuildVoiceState selfVoiceState = self.getVoiceState();
+
+            if (! selfVoiceState.inAudioChannel()) {
+                event.getGuild().getAudioManager().openAudioConnection(guildVoiceState.getChannel());
+            }
+            else {
+                if (selfVoiceState.getChannel() != guildVoiceState.getChannel()) {
+                    event.reply("You are not in same channel as Bot").queue();
+                    return;
+                }
+            }
+
+            PlayerManager playerManager = PlayerManager.get();
+            playerManager.play(event.getGuild(), event.getOption("URL").getAsString());
         }
     }
 
