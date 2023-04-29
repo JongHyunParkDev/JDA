@@ -22,7 +22,7 @@ public class HomeService {
     private void init() {
         DefaultShardManagerBuilder builder = DefaultShardManagerBuilder.createDefault(token);
         builder.setStatus(OnlineStatus.ONLINE);
-        builder.setActivity(Activity.watching("LCK"));
+        builder.setActivity(Activity.playing("공부"));
         builder.enableIntents(
                 GatewayIntent.GUILD_MEMBERS,
                 GatewayIntent.GUILD_MESSAGES,
