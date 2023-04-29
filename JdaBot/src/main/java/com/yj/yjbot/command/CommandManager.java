@@ -88,7 +88,8 @@ public class CommandManager extends ListenerAdapter {
             }
 
             PlayerManager playerManager = PlayerManager.get();
-            playerManager.play(event.getGuild(), event.getOption("URL").getAsString());
+            playerManager.play(event.getGuild(), event.getOption("링크").getAsString());
+            event.reply(event.getOption("링크").getAsString()).queue();
         }
     }
 
@@ -112,6 +113,10 @@ public class CommandManager extends ListenerAdapter {
                                 new OptionData(OptionType.USER, "참가4", "게임에 참가할 유저들을 선택해주세요", false),
                                 new OptionData(OptionType.USER, "참가5", "게임에 참가할 유저들을 선택해주세요", false),
                                 new OptionData(OptionType.USER, "참가6", "게임에 참가할 유저들을 선택해주세요", false)
+                            ));
+                    add(Commands.slash("play", "유튜브 link 를 주시면 해당 URL sound 를 내보냅니다.")
+                            .addOptions(
+                                    new OptionData(OptionType.STRING, "링크", "Youtube URL", true)
                             ));
                 }}
         ).queue();
