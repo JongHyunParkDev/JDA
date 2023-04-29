@@ -11,12 +11,12 @@ import org.springframework.stereotype.Component;
 public class TaskSchedule {
     public static TextChannel textChannel;
 
-    @Scheduled(cron = "0 55 * * * *")
-    public void taskSchedule() {
-        if (textChannel == null)
-            return;
-        // run Task
-    }
+//    @Scheduled(cron = "0 55 * * * *")
+//    public void taskSchedule() {
+//        if (textChannel == null)
+//            return;
+//        // run Task
+//    }
 
     private static final Logger logger = LoggerFactory.getLogger(TaskSchedule.class);
 }
