@@ -4,6 +4,7 @@ import com.sedmelluq.discord.lavaplayer.track.AudioTrackInfo;
 import com.yj.yjbot.data.LiarGame;
 import com.yj.yjbot.lavaplayer.GuildMusicManager;
 import com.yj.yjbot.lavaplayer.PlayerManager;
+import com.yj.yjbot.lavaplayer.TrackScheduler;
 import com.yj.yjbot.schedule.TaskSchedule;
 import net.dv8tion.jda.api.entities.GuildVoiceState;
 import net.dv8tion.jda.api.entities.Member;
@@ -121,6 +122,34 @@ public class CommandManager extends ListenerAdapter {
 
             event.reply("Skipped (" + title + ")").setEphemeral(true).queue();
         }
+        else if (command.equals("clear")) {
+            Member member = event.getMember();
+            GuildVoiceState guildVoiceState = member.getVoiceState();
+
+            if (! guildVoiceState.inAudioChannel()) {
+                event.reply("You are not in Voice Channel").setEphemeral(true).queue();
+                return;
+            }
+
+            Member self = event.getGuild().getSelfMember();
+            GuildVoiceState selfVoiceState = self.getVoiceState();
+
+            if (! selfVoiceState.inAudioChannel()) {
+                event.reply("I (Bot) am not in an audio channel").setEphemeral(true).queue();
+                return;
+            }
+
+            if (selfVoiceState.getChannel() != guildVoiceState.getChannel()) {
+                event.reply("You are not in same channel as Bot").setEphemeral(true).queue();
+                return;
+            }
+            GuildMusicManager guildMusicManager = PlayerManager.get().getGuildMusicManager(event.getGuild());
+            TrackScheduler trackScheduler = guildMusicManager.getTrackScheduler();
+            trackScheduler.getQueue().clear();
+            trackScheduler.getPlayer().stopTrack();
+
+            event.reply("Clear").setEphemeral(true).queue();
+        }
     }
 
     @Override
@@ -149,7 +178,7 @@ public class CommandManager extends ListenerAdapter {
                                     new OptionData(OptionType.STRING, "링크", "Youtube URL", true)
                             ));
                     add(Commands.slash("skip", "현재 재생중인 트랙을 넘깁니다."));
-                    add(Commands.slash("stop", "현재 재생중인 트랙을 정지합니다."));
+                    add(Commands.slash("clear", "현재 트랙들을 모두 지웁니다."));
                     add(Commands.slash("queue", "현재 재생중 or 재생 예정인 목록 보여줍니다."));
                     add(Commands.slash("repeat", "현재 재생중인 트랙을 반복합니다."));
                     add(Commands.slash("nowPlaying", "현재 재생중인 트랙을 보여줍니다."));
