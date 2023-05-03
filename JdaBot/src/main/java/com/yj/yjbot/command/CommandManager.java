@@ -1,7 +1,6 @@
 package com.yj.yjbot.command;
 
 import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
-import com.sedmelluq.discord.lavaplayer.track.AudioTrackInfo;
 import com.yj.yjbot.data.LiarGame;
 import com.yj.yjbot.lavaplayer.GuildMusicManager;
 import com.yj.yjbot.lavaplayer.PlayerManager;
@@ -90,10 +89,17 @@ public class CommandManager extends ListenerAdapter {
                     return;
                 }
             }
+            String url = event.getOption("링크").getAsString();
+            String msg = url;
+
+            if (url.startsWith("!!")) {
+                msg = url.substring(2);
+                url = "ytsearch:" + msg;
+            }
 
             PlayerManager playerManager = PlayerManager.get();
-            playerManager.play(event.getGuild(), event.getOption("링크").getAsString());
-            event.reply(event.getOption("링크").getAsString()).setEphemeral(true).queue();
+            playerManager.play(event.getGuild(), url);
+            event.reply(msg).setEphemeral(true).queue();
         }
         else if (command.equals("skip")) {
             Member member = event.getMember();
@@ -240,7 +246,7 @@ public class CommandManager extends ListenerAdapter {
                             ));
                     add(Commands.slash("play", "유튜브 link 를 주시면 해당 URL sound 를 내보냅니다.")
                             .addOptions(
-                                    new OptionData(OptionType.STRING, "링크", "Youtube URL", true)
+                                    new OptionData(OptionType.STRING, "링크", "Youtube URL Or !! Youtube Search top one", true)
                             ));
                     add(Commands.slash("skip", "현재 재생중인 트랙을 넘깁니다."));
                     add(Commands.slash("clear", "현재 트랙들을 모두 지웁니다."));
