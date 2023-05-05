@@ -289,7 +289,7 @@ public class CommandManager extends ListenerAdapter {
                 AudioTrackInfo info = queue.get(i).getInfo();
                 embedBuilder.addField(i + 1 + " Track Title:", info.title, false);
             }
-            event.replyEmbeds(embedBuilder.build()).queue();
+            event.replyEmbeds(embedBuilder.build()).setEphemeral(true).queue();
         }
     }
 
