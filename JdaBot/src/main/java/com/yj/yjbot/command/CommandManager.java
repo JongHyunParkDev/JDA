@@ -1,8 +1,13 @@
 package com.yj.yjbot.command;
 
+import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
+import com.sedmelluq.discord.lavaplayer.track.AudioTrackInfo;
 import com.yj.yjbot.data.LiarGame;
+import com.yj.yjbot.lavaplayer.GuildMusicManager;
 import com.yj.yjbot.lavaplayer.PlayerManager;
+import com.yj.yjbot.lavaplayer.TrackScheduler;
 import com.yj.yjbot.schedule.TaskSchedule;
+import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.GuildVoiceState;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.channel.ChannelType;
@@ -70,7 +75,7 @@ public class CommandManager extends ListenerAdapter {
             GuildVoiceState guildVoiceState = member.getVoiceState();
 
             if (! guildVoiceState.inAudioChannel()) {
-                event.reply("You are not in Voice Channel").queue();
+                event.reply("You are not in Voice Channel").setEphemeral(true).queue();
                 return;
             }
 
@@ -82,14 +87,209 @@ public class CommandManager extends ListenerAdapter {
             }
             else {
                 if (selfVoiceState.getChannel() != guildVoiceState.getChannel()) {
-                    event.reply("You are not in same channel as Bot").queue();
+                    event.reply("You are not in same channel as Bot").setEphemeral(true).queue();
                     return;
                 }
             }
+            String url = event.getOption("링크").getAsString();
+            String msg = url;
+
+            if (url.startsWith("!!")) {
+                msg = url.substring(2);
+                url = "ytsearch:" + msg;
+            }
 
             PlayerManager playerManager = PlayerManager.get();
-            playerManager.play(event.getGuild(), event.getOption("링크").getAsString());
-            event.reply(event.getOption("링크").getAsString()).queue();
+            playerManager.play(event.getGuild(), url);
+            event.reply(msg).setEphemeral(true).queue();
+        }
+        else if (command.equals("skip")) {
+            Member member = event.getMember();
+            GuildVoiceState guildVoiceState = member.getVoiceState();
+
+            if (! guildVoiceState.inAudioChannel()) {
+                event.reply("You are not in Voice Channel").setEphemeral(true).queue();
+                return;
+            }
+
+            Member self = event.getGuild().getSelfMember();
+            GuildVoiceState selfVoiceState = self.getVoiceState();
+
+            if (! selfVoiceState.inAudioChannel()) {
+                event.reply("I (Bot) am not in an audio channel").setEphemeral(true).queue();
+                return;
+            }
+
+            if (selfVoiceState.getChannel() != guildVoiceState.getChannel()) {
+                event.reply("You are not in same channel as Bot").setEphemeral(true).queue();
+                return;
+            }
+            GuildMusicManager guildMusicManager = PlayerManager.get().getGuildMusicManager(event.getGuild());
+            String resultMsg = "Skip (" +
+                    guildMusicManager.getTrackScheduler().getPlayer().getPlayingTrack().getInfo().title +
+                    ")";
+
+            guildMusicManager.getTrackScheduler().getPlayer().stopTrack();
+
+            AudioTrack audioTrack = guildMusicManager.
+                    getTrackScheduler().
+                    getPlayer().
+                    getPlayingTrack();
+
+            if (audioTrack != null)
+                resultMsg += "\n" + audioTrack.getInfo().uri;
+
+            event.reply(resultMsg).setEphemeral(true).queue();
+        }
+        else if (command.equals("clear")) {
+            Member member = event.getMember();
+            GuildVoiceState guildVoiceState = member.getVoiceState();
+
+            if (! guildVoiceState.inAudioChannel()) {
+                event.reply("You are not in Voice Channel").setEphemeral(true).queue();
+                return;
+            }
+
+            Member self = event.getGuild().getSelfMember();
+            GuildVoiceState selfVoiceState = self.getVoiceState();
+
+            if (! selfVoiceState.inAudioChannel()) {
+                event.reply("I (Bot) am not in an audio channel").setEphemeral(true).queue();
+                return;
+            }
+
+            if (selfVoiceState.getChannel() != guildVoiceState.getChannel()) {
+                event.reply("You are not in same channel as Bot").setEphemeral(true).queue();
+                return;
+            }
+            GuildMusicManager guildMusicManager = PlayerManager.get().getGuildMusicManager(event.getGuild());
+            TrackScheduler trackScheduler = guildMusicManager.getTrackScheduler();
+            trackScheduler.getQueue().clear();
+            trackScheduler.getPlayer().stopTrack();
+
+            event.reply("Clear").setEphemeral(true).queue();
+        }
+        else if (command.equals("pause")) {
+            Member member = event.getMember();
+            GuildVoiceState guildVoiceState = member.getVoiceState();
+
+            if (! guildVoiceState.inAudioChannel()) {
+                event.reply("You are not in Voice Channel").setEphemeral(true).queue();
+                return;
+            }
+
+            Member self = event.getGuild().getSelfMember();
+            GuildVoiceState selfVoiceState = self.getVoiceState();
+
+            if (! selfVoiceState.inAudioChannel()) {
+                event.reply("I (Bot) am not in an audio channel").setEphemeral(true).queue();
+                return;
+            }
+
+            if (selfVoiceState.getChannel() != guildVoiceState.getChannel()) {
+                event.reply("You are not in same channel as Bot").setEphemeral(true).queue();
+                return;
+            }
+            GuildMusicManager guildMusicManager = PlayerManager.get().getGuildMusicManager(event.getGuild());
+            TrackScheduler trackScheduler = guildMusicManager.getTrackScheduler();
+            trackScheduler.getPlayer().setPaused(true);
+
+            event.reply("Pause").setEphemeral(true).queue();
+        }
+        else if (command.equals("resume")) {
+            Member member = event.getMember();
+            GuildVoiceState guildVoiceState = member.getVoiceState();
+
+            if (! guildVoiceState.inAudioChannel()) {
+                event.reply("You are not in Voice Channel").setEphemeral(true).queue();
+                return;
+            }
+
+            Member self = event.getGuild().getSelfMember();
+            GuildVoiceState selfVoiceState = self.getVoiceState();
+
+            if (! selfVoiceState.inAudioChannel()) {
+                event.reply("I (Bot) am not in an audio channel").setEphemeral(true).queue();
+                return;
+            }
+
+            if (selfVoiceState.getChannel() != guildVoiceState.getChannel()) {
+                event.reply("You are not in same channel as Bot").setEphemeral(true).queue();
+                return;
+            }
+            GuildMusicManager guildMusicManager = PlayerManager.get().getGuildMusicManager(event.getGuild());
+            TrackScheduler trackScheduler = guildMusicManager.getTrackScheduler();
+            trackScheduler.getPlayer().setPaused(false);
+
+            event.reply("Resume").setEphemeral(true).queue();
+        }
+        else if (command.equals("nowplaying")) {
+            Member member = event.getMember();
+            GuildVoiceState guildVoiceState = member.getVoiceState();
+
+            if (! guildVoiceState.inAudioChannel()) {
+                event.reply("You are not in Voice Channel").setEphemeral(true).queue();
+                return;
+            }
+
+            Member self = event.getGuild().getSelfMember();
+            GuildVoiceState selfVoiceState = self.getVoiceState();
+
+            if (! selfVoiceState.inAudioChannel()) {
+                event.reply("I (Bot) am not in an audio channel").setEphemeral(true).queue();
+                return;
+            }
+
+            if (selfVoiceState.getChannel() != guildVoiceState.getChannel()) {
+                event.reply("You are not in same channel as Bot").setEphemeral(true).queue();
+                return;
+            }
+
+            GuildMusicManager guildMusicManager = PlayerManager.get().getGuildMusicManager(event.getGuild());
+            AudioTrackInfo audioTrackInfo = guildMusicManager.
+                    getTrackScheduler().getPlayer().getPlayingTrack().getInfo();
+            EmbedBuilder embedBuilder = new EmbedBuilder();
+            embedBuilder.setTitle("Currently Playing");
+            embedBuilder.setDescription("**Name:** `" + audioTrackInfo.title + "`");
+            embedBuilder.appendDescription("\n**Author:** `" + audioTrackInfo.author + "`");
+            embedBuilder.appendDescription("\n**URL:** `" + audioTrackInfo.uri + "`");
+
+            event.replyEmbeds(embedBuilder.build()).setEphemeral(true).queue();
+        }
+        else if (command.equals("tracklist")) {
+            Member member = event.getMember();
+            GuildVoiceState memberVoiceState = member.getVoiceState();
+
+            if(!memberVoiceState.inAudioChannel()) {
+                event.reply("You need to be in a voice channel").queue();
+                return;
+            }
+
+            Member self = event.getGuild().getSelfMember();
+            GuildVoiceState selfVoiceState = self.getVoiceState();
+
+            if(!selfVoiceState.inAudioChannel()) {
+                event.reply("I am not in an audio channel").queue();
+                return;
+            }
+
+            if(selfVoiceState.getChannel() != memberVoiceState.getChannel()) {
+                event.reply("You are not in the same channel as me").queue();
+                return;
+            }
+
+            GuildMusicManager guildMusicManager = PlayerManager.get().getGuildMusicManager(event.getGuild());
+            List<AudioTrack> queue = new ArrayList<>(guildMusicManager.getTrackScheduler().getQueue());
+            EmbedBuilder embedBuilder = new EmbedBuilder();
+            embedBuilder.setTitle("Current Track List");
+            if (queue.isEmpty()) {
+                embedBuilder.setDescription("Queue is empty");
+            }
+            for (int i = 0; i < queue.size(); i++) {
+                AudioTrackInfo info = queue.get(i).getInfo();
+                embedBuilder.addField(i + 1 + " Track Title:", info.title, false);
+            }
+            event.replyEmbeds(embedBuilder.build()).setEphemeral(true).queue();
         }
     }
 
@@ -116,8 +316,14 @@ public class CommandManager extends ListenerAdapter {
                             ));
                     add(Commands.slash("play", "유튜브 link 를 주시면 해당 URL sound 를 내보냅니다.")
                             .addOptions(
-                                    new OptionData(OptionType.STRING, "링크", "Youtube URL", true)
+                                    new OptionData(OptionType.STRING, "링크", "Youtube URL Or !! Youtube Search top one", true)
                             ));
+                    add(Commands.slash("skip", "현재 재생중인 트랙을 넘깁니다."));
+                    add(Commands.slash("clear", "현재 트랙들을 모두 지웁니다."));
+                    add(Commands.slash("tracklist", "현재 트랙들의 목록 보여줍니다."));
+                    add(Commands.slash("nowplaying", "현재 재생중인 트랙을 보여줍니다."));
+                    add(Commands.slash("pause", "현재 재생중인 트랙을 정지합니다."));
+                    add(Commands.slash("resume", "현재 정지된 트랙을 재실행합니다."));
                 }}
         ).queue();
     }
