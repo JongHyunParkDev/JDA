@@ -23,11 +23,10 @@ public class Say implements Command{
 
     @Override
     public List<OptionData> getOptions() {
-        List<OptionData> options = new ArrayList<>() {{
-            new OptionData(OptionType.STRING, "메시지", "전송할 메시지", true);
-            new OptionData(OptionType.CHANNEL, "채널", "Message 채널 선택", false)
-                    .setChannelTypes(ChannelType.TEXT, ChannelType.NEWS);
-        }};
+        List<OptionData> options = new ArrayList<OptionData>();
+        options.add(new OptionData(OptionType.STRING, "메시지", "전송할 메시지", true));
+        options.add(new OptionData(OptionType.CHANNEL, "채널", "Message 채널 선택", false)
+                .setChannelTypes(ChannelType.TEXT, ChannelType.NEWS));
         return options;
     }
 

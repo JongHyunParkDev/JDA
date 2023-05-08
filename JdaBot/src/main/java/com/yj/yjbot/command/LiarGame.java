@@ -23,14 +23,13 @@ public class LiarGame implements Command{
 
     @Override
     public List<OptionData> getOptions() {
-        List<OptionData> options = new ArrayList<>() {{
-            new OptionData(OptionType.USER, "참가1", "게임에 참가할 유저들을 선택해주세요", true);
-            new OptionData(OptionType.USER, "참가2", "게임에 참가할 유저들을 선택해주세요", true);
-            new OptionData(OptionType.USER, "참가3", "게임에 참가할 유저들을 선택해주세요", true);
-            new OptionData(OptionType.USER, "참가4", "게임에 참가할 유저들을 선택해주세요", false);
-            new OptionData(OptionType.USER, "참가5", "게임에 참가할 유저들을 선택해주세요", false);
-            new OptionData(OptionType.USER, "참가6", "게임에 참가할 유저들을 선택해주세요", false);
-        }};
+        List<OptionData> options = new ArrayList<>();
+        options.add(new OptionData(OptionType.USER, "참가1", "게임에 참가할 유저들을 선택해주세요", true));
+        options.add(new OptionData(OptionType.USER, "참가2", "게임에 참가할 유저들을 선택해주세요", true));
+        options.add(new OptionData(OptionType.USER, "참가3", "게임에 참가할 유저들을 선택해주세요", true));
+        options.add(new OptionData(OptionType.USER, "참가4", "게임에 참가할 유저들을 선택해주세요", false));
+        options.add(new OptionData(OptionType.USER, "참가5", "게임에 참가할 유저들을 선택해주세요", false));
+        options.add(new OptionData(OptionType.USER, "참가6", "게임에 참가할 유저들을 선택해주세요", false));
 
         return options;
     }

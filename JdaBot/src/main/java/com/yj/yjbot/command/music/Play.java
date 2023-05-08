@@ -24,9 +24,9 @@ public class Play implements Command {
 
     @Override
     public List<OptionData> getOptions() {
-        List<OptionData> options = new ArrayList<>() {{
-            new OptionData(OptionType.STRING, "링크", "Youtube URL Or !! Youtube Search top one", true);
-        }};
+        List<OptionData> options = new ArrayList<>();
+        options.add(new OptionData(OptionType.STRING, "링크", "Youtube URL Or !! Youtube Search top one", true));
+
         return options;
     }
 
