@@ -7,11 +7,11 @@ import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEve
 import net.dv8tion.jda.api.events.session.ReadyEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
 public class CommandManager extends ListenerAdapter {
-    private List<Command> commands = new ArrayList<>();
+    private Map<String, Command> commandMap = new HashMap<>();
 
     @Override
     public void onGuildReady(GuildReadyEvent event) {
@@ -21,7 +21,7 @@ public class CommandManager extends ListenerAdapter {
     @Override
     public void onReady(ReadyEvent event) {
         for (Guild guild : event.getJDA().getGuilds()) {
-            for (Command command : commands) {
+            for (Command command : commandMap.values()) {
                 if (command.getOptions() == null) {
                     guild.upsertCommand(command.getName(),
                             command.getDescription())
@@ -35,15 +35,10 @@ public class CommandManager extends ListenerAdapter {
 
     @Override
     public void onSlashCommandInteraction(SlashCommandInteractionEvent event) {
-        for (Command command : commands) {
-            if (command.getName().equals(event.getName())) {
-                command.execute(event);
-                return;
-            }
-        }
+        commandMap.get(event.getName()).execute(event);
     }
 
     public void add(Command command) {
-        commands.add(command);
+        commandMap.put(command.getName(), command);
     }
 }
